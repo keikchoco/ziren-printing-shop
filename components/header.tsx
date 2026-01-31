@@ -5,6 +5,7 @@ import Image from "next/image"
 import { useState } from "react"
 import { Menu, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { ThemeSwitcher } from "@/components/theme-switcher"
 
 const navLinks = [
   { href: "#services", label: "Services" },
@@ -45,6 +46,7 @@ export function Header() {
           </nav>
 
           <div className="hidden md:flex items-center gap-4">
+            <ThemeSwitcher />
             <Button asChild>
               <Link href="#contact">Get a Quote</Link>
             </Button>
@@ -73,11 +75,14 @@ export function Header() {
                   {link.label}
                 </Link>
               ))}
-              <Button asChild className="mt-2">
-                <Link href="#contact" onClick={() => setMobileMenuOpen(false)}>
-                  Get a Quote
-                </Link>
-              </Button>
+              <div className="flex items-center gap-4 pt-2">
+                <ThemeSwitcher />
+                <Button asChild className="flex-1">
+                  <Link href="#contact" onClick={() => setMobileMenuOpen(false)}>
+                    Get a Quote
+                  </Link>
+                </Button>
+              </div>
             </div>
           </nav>
         )}
