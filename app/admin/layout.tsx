@@ -3,9 +3,8 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { ThemeProvider } from "@/components/theme-provider";
+// @ts-ignore
 import "../globals.css";
-import { Header } from "@/components/header";
-import { Footer } from "@/components/footer";
 
 const _geist = Geist({ subsets: ["latin"] });
 const _geistMono = Geist_Mono({ subsets: ["latin"] });
@@ -26,11 +25,9 @@ export default function RootLayout({
       <body className={`font-sans antialiased`}>
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
           <main className="flex flex-col min-h-screen bg-background">
-            <Header />
-            <div className="grow mt-16 p-4">
+            <div className="">
               {children}
             </div>
-            <Footer />
           </main>
         </ThemeProvider>
         <Analytics />
