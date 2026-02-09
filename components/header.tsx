@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button"
 import { ThemeSwitcher } from "@/components/theme-switcher"
 
 const navLinks = [
+  { href: "/", label: "Home" },
   { href: "#services", label: "Services" },
   { href: "#pricing", label: "Pricing" },
   { href: "#about", label: "About Us" },
@@ -19,7 +20,7 @@ export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border w-full">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16 md:h-20">
           <Link href="/" className="flex items-center gap-2">
@@ -47,7 +48,7 @@ export function Header() {
 
           <div className="hidden md:flex items-center gap-4">
             <ThemeSwitcher />
-            <Button asChild>
+            <Button>
               <Link href="#contact">Get a Quote</Link>
             </Button>
           </div>
@@ -77,7 +78,7 @@ export function Header() {
               ))}
               <div className="flex items-center gap-4 pt-2">
                 <ThemeSwitcher />
-                <Button asChild className="flex-1">
+                <Button className="flex-1">
                   <Link href="#contact" onClick={() => setMobileMenuOpen(false)}>
                     Get a Quote
                   </Link>

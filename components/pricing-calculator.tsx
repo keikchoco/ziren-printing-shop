@@ -55,7 +55,7 @@ export function PricingCalculator() {
   }
 
   return (
-    <section id="pricing" className="py-16 md:py-24 bg-card/50">
+    <section id="pricing" className="py-16 md:py-24 bg-card/50 scroll-mt-16">
       <div className="container mx-auto px-4">
         <div className="text-center max-w-2xl mx-auto mb-12">
           <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4 text-balance">
@@ -87,7 +87,7 @@ export function PricingCalculator() {
                 <Label htmlFor="product" className="text-foreground">
                   Product Type
                 </Label>
-                <Select value={product} onValueChange={setProduct}>
+                <Select value={product} onValueChange={(value) => setProduct(value || "")}>
                   <SelectTrigger id="product" className="bg-input border-border text-foreground">
                     <SelectValue placeholder="Select product" />
                   </SelectTrigger>
@@ -105,7 +105,7 @@ export function PricingCalculator() {
                 <Label htmlFor="paper" className="text-foreground">
                   Paper/Material
                 </Label>
-                <Select value={paper} onValueChange={setPaper}>
+                <Select value={paper} onValueChange={(value) => setPaper(value || "")}>
                   <SelectTrigger id="paper" className="bg-input border-border text-foreground">
                     <SelectValue placeholder="Select material" />
                   </SelectTrigger>

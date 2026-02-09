@@ -8,9 +8,9 @@ export function Hero() {
     <section className="relative pt-24 md:pt-32 pb-16 md:pb-24 overflow-hidden">
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,var(--tw-gradient-stops))] from-secondary/20 via-transparent to-transparent" />
 
-      <div className="container mx-auto px-4 relative">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
-          <div className="max-w-2xl">
+      <div className="container mx-auto px-4 relative max-w-6xl">
+        <div className="grid lg:grid-cols-2 gap-12 items-center justify-center">
+          <div className="max-w-2xl mx-auto">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium mb-6">
               <Zap className="h-4 w-4" />
               Fast Turnaround Time
@@ -27,13 +27,13 @@ export function Hero() {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 mb-12">
-              <Button size="lg" asChild className="text-base">
+              <Button size="lg" className="text-base">
                 <Link href="#pricing">
                   Get Instant Quote
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Link>
               </Button>
-              <Button size="lg" variant="outline" asChild className="text-base bg-transparent">
+              <Button size="lg" variant="outline" className="text-base bg-transparent">
                 <Link href="#services">View Our Services</Link>
               </Button>
             </div>

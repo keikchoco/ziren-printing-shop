@@ -20,8 +20,8 @@ const contactInfo = [
   {
     icon: Phone,
     label: "Phone",
-    value: "+63 XXX XXX XXXX",
-    href: "tel:+63XXXXXXXXXX",
+    value: "+63 955 188 5460",
+    href: "tel:+639551885460",
   },
   {
     icon: MapPin,
@@ -109,7 +109,7 @@ export function Contact() {
             </Card>
           </div>
 
-          <Card className="bg-card border-border">
+          <Card className="bg-card border-border h-fit">
             <CardHeader>
               <CardTitle className="text-foreground">Send us a Message</CardTitle>
               <CardDescription className="text-muted-foreground">
