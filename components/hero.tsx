@@ -28,7 +28,7 @@ export function Hero() {
 
             <div className="flex flex-col sm:flex-row gap-4 mb-12">
               <Button size="lg" className="text-base">
-                <Link href="#pricing">
+                <Link href="#pricing" className=" flex flex-row items-center">
                   Get Instant Quote
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Link>

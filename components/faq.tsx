@@ -25,7 +25,7 @@ const faqs = [
 
 export function FAQ() {
   return (
-    <section id="faq" className="py-16 md:py-24 bg-card/50 scroll-mt-16">
+    <section id="faq" className="py-16 md:py-24 bg-card/50 scroll-mt-16 rounded-2xl">
       <div className="container mx-auto px-4">
         <div className="text-center max-w-2xl mx-auto mb-12">
           <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4 text-balance">
@@ -42,7 +42,7 @@ export function FAQ() {
               <AccordionItem
                 key={`faq-${index}-${faq.question.slice(0, 20).replace(/\s/g, "-")}`}
                 value={`item-${index}`}
-                className="bg-card border border-border rounded-lg px-6"
+                className="bg-card border border-border rounded-lg px-6 last:border"
               >
                 <AccordionTrigger className="text-foreground hover:text-primary text-left">
                   {faq.question}

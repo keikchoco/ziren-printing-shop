@@ -28,7 +28,7 @@ export default function RootLayout({
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
           <main className="flex flex-col min-h-screen bg-background">
             <Header />
-            <div className="grow mt-16 p-4">
+            <div className="grow mt-16 p-4 flex flex-col">
               {children}
             </div>
             <Footer />
