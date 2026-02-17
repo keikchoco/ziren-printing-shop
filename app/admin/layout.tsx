@@ -1,6 +1,4 @@
 import React from "react";
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 // @ts-ignore
 import "../globals.css";
 import { auth } from "@/lib/auth";
@@ -9,14 +7,6 @@ import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/app-sidebar";
 import { SiteHeader } from "@/components/site-header";
 
-const _geist = Geist({ subsets: ["latin"] });
-const _geistMono = Geist_Mono({ subsets: ["latin"] });
-
-export const metadata: Metadata = {
-  title: "Ziren Printing Shop | Professional Printing Services",
-  description:
-    "Quality printing services for all your needs - business cards, banners, flyers, and more. Fast turnaround and competitive prices.",
-};
 
 export default async function RootLayout({
   children,
