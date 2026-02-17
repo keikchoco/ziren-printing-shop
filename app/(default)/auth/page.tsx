@@ -3,7 +3,6 @@
 import { Suspense, useState } from "react";
 import { SignInForm } from "@/components/auth/sign-in";
 import { SignUpForm } from "@/components/auth/sign-up";
-import { Button } from "@/components/ui/button";
 
 export default function AuthPage() {
   const [mode, setMode] = useState<"signin" | "signup">("signin");

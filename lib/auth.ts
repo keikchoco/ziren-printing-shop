@@ -8,6 +8,9 @@ const db = client.db(process.env.MONGODB_DATABASE!);
 export const auth = betterAuth({
   baseURL: process.env.BETTER_AUTH_BASE_URL,
   secret: process.env.BETTER_AUTH_SECRET,
+  advanced: {
+    cookiePrefix: "ziren-printing-shop",
+  },
   database: mongodbAdapter(db, {
     client, 
   }),
