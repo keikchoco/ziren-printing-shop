@@ -47,7 +47,7 @@ export function Header() {
           </nav>
 
           <div className="hidden md:flex items-center gap-4">
-            <ThemeSwitcher />
+            {/* <ThemeSwitcher /> */}
             <Button>
               <Link href="#contact">Get a Quote</Link>
             </Button>
