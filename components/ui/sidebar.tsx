@@ -156,11 +156,13 @@ function Sidebar({
   className,
   children,
   dir,
+  userData,
   ...props
 }: React.ComponentProps<"div"> & {
   side?: "left" | "right"
   variant?: "sidebar" | "floating" | "inset"
   collapsible?: "offcanvas" | "icon" | "none"
+  userData?: any
 }) {
   const { isMobile, state, openMobile, setOpenMobile } = useSidebar()
 

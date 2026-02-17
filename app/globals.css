@@ -3,8 +3,7 @@
 
 @custom-variant dark (&:is(.dark *));
 
-:root {
-  /* Dark charcoal background with gold/blue accents - Ziren Printing Shop */
+/* :root {
   --background: oklch(0.2 0.005 270);
   --foreground: oklch(0.95 0 0);
   --card: oklch(0.25 0.005 270);
@@ -38,9 +37,10 @@
   --sidebar-accent-foreground: oklch(0.95 0 0);
   --sidebar-border: oklch(0.35 0.01 270);
   --sidebar-ring: oklch(0.78 0.15 85);
-}
+} */
 
-.light {
+/* .light { */
+:root {
   /* Light theme with warm gold/blue accents */
   --background: oklch(0.98 0.002 270);
   --foreground: oklch(0.2 0.005 270);

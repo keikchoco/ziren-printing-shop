@@ -19,8 +19,8 @@ import { LayoutDashboardIcon, ListIcon, ChartBarIcon, FolderIcon, UsersIcon, Cam
 
 const data = {
   user: {
-    name: "Ziren",
-    email: "zirenprintingshop@gmail.com",
+    name: "Loading...",
+    email: "Loading...",
     avatar: "/avatars/shadcn.jpg",
   },
   navMain: [
@@ -176,6 +176,8 @@ const data = {
   ],
 }
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  console.log("AppSidebar props:", props.userData)
+
   return (
     <Sidebar collapsible="offcanvas" {...props}>
       <SidebarHeader>
@@ -197,7 +199,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <NavSecondary items={data.navSecondary} className="mt-auto" />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user} />
+        <NavUser user={props.userData ?? data.user} />
       </SidebarFooter>
     </Sidebar>
   )
