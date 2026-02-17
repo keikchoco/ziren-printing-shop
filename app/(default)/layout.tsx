@@ -23,19 +23,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" style={{scrollBehavior:'smooth'}} suppressHydrationWarning>
-      <body className={`font-sans antialiased`}>
-        <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
-          <main className="flex flex-col min-h-screen bg-background">
-            <Header />
-            <div className="grow mt-16 p-4 flex flex-col">
-              {children}
-            </div>
-            <Footer />
-          </main>
-        </ThemeProvider>
-        <Analytics />
-      </body>
-    </html>
+    <main className="flex flex-col min-h-screen bg-background">
+      <Header />
+      <div className="grow mt-16 p-4 flex flex-col">{children}</div>
+      <Footer />
+    </main>
   );
 }
