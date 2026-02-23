@@ -19,7 +19,7 @@ const faqs = [
   {
     question: "What payment methods do you accept?",
     answer:
-      "We accept cash, credit/debit cards, bank transfers, and popular e-wallet payments. For corporate clients, we also offer invoicing with payment terms.",
+      "We accept cash, bank transfers, and GCash payments. For corporate clients, we also offer invoicing with payment terms.",
   },
 ]
 

@@ -55,7 +55,7 @@ export default function Services({ params }: { params: Promise<{ slug: string | 
           <div className='mt-6'>
             <p>No detailed services found for this category.</p>
           </div>
-        )}
+        )}338
 
         {data && (
           <div className='mt-6 grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3'>

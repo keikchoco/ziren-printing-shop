@@ -19,7 +19,7 @@ export function About() {
               About Ziren Printing Shop
             </h2>
             <p className="text-muted-foreground text-lg leading-relaxed mb-6 text-pretty">
-              With over 5 years of experience in the printing industry, Ziren Printing Shop has
+              With over 7 years of experience in the printing industry, Ziren Printing Shop has
               established itself as a trusted partner for businesses and individuals seeking
               high-quality printing services.
             </p>
@@ -47,18 +47,18 @@ export function About() {
                   <p className="text-4xl font-bold text-primary mb-2">500+</p>
                   <p className="text-sm text-muted-foreground">Happy Clients</p>
                 </div>
-                <div className="text-center p-6 bg-secondary/10 rounded-xl">
-                  <p className="text-4xl font-bold text-secondary mb-2">5+</p>
-                  <p className="text-sm text-muted-foreground">Years Experience</p>
-                </div>
-                <div className="text-center p-6 bg-secondary/10 rounded-xl">
+                <div className="text-center p-6 bg-secondary/10 rounded-xl ">
                   <p className="text-4xl font-bold text-secondary mb-2">1000+</p>
                   <p className="text-sm text-muted-foreground">Projects Completed</p>
                 </div>
-                <div className="text-center p-6 bg-primary/5 rounded-xl">
+                <div className="text-center p-6 bg-secondary/10 rounded-xl col-span-2">
+                  <p className="text-4xl font-bold text-secondary mb-2">7+</p>
+                  <p className="text-sm text-muted-foreground">Years Experience</p>
+                </div>
+                {/* <div className="text-center p-6 bg-primary/5 rounded-xl">
                   <p className="text-4xl font-bold text-primary mb-2">24/7</p>
                   <p className="text-sm text-muted-foreground">Support Available</p>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>
