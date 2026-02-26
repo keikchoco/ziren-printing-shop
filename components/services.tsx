@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import {
   CreditCard,
   FileText,
@@ -15,57 +15,76 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { get } from "http";
+import { getServices } from "@/app/actions";
 
 const services = [
   {
     icon: CreditCard,
-    title: "Business Cards",
+    service: "business-cards",
+    display_name: "Business Cards",
     description:
       "Premium quality business cards with various finishes including matte, glossy, and textured options.",
   },
   {
     icon: FileText,
-    title: "Flyers & Brochures",
+    service: "flyers-brochures",
+    display_name: "Flyers & Brochures",
     description:
       "Eye-catching flyers and professional brochures to promote your business, events, or services.",
   },
   {
     icon: ImageIcon,
-    title: "Banners & Posters",
+    service: "banners-posters",
+    display_name: "Banners & Posters",
     description:
       "Large format printing for banners, posters, and signage that make a big impact.",
   },
   {
     icon: Layers,
-    title: "Stickers & Labels",
+    service: "stickers-labels",
+    display_name: "Stickers & Labels",
     description:
       "Custom stickers and labels in various shapes, sizes, and materials for any application.",
   },
   {
     icon: Stamp,
-    title: "Stamps & Seals",
+    service: "stamps-seals",
+    display_name: "Stamps & Seals",
     description:
       "Professional rubber stamps and embossing seals for official documents and branding.",
   },
   {
     icon: Shirt,
-    title: "Custom Apparels",
+    service: "custom-apparels",
+    display_name: "Custom Apparels",
     description:
       "T-shirt printing and custom apparel with high-quality prints that last.",
   },
   {
     icon: SignpostIcon,
-    title: "Signages",
+    service: "signages",
+    display_name: "Signages",
     description:
       "Durable and vibrant signage solutions for indoor and outdoor use, including yard signs and directional signs.",
   },
 ];
 
 export function Services() {
+  const [servicesData, setServicesData] = useState(services);
   const router = useRouter();
 
+  useEffect(() => {
+    getServices().then((res) => {
+      if (res.success) {
+        setServicesData(res.data);
+      } else {
+        console.error("Failed to fetch services:", res.message);
+      }
+    });
+  }, []);
 
   return (
     <>
@@ -81,19 +100,23 @@ export function Services() {
             </p>
           </div>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {services.map((service) => (
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {servicesData.map((service) => (
               <Card
-                key={service.title}
-                className="bg-card border-border hover:border-primary/50 group hover:cursor-pointer hover:scale-104 transition-all"
-                onClick={() => router.push(`/services/${service.title.toLowerCase().replace(/\s+/g, "-")}`)}
+                key={service.service}
+                className="bg-card border-border hover:border-primary/50 group hover:cursor-pointer hover:scale-103 transition-all rounded-2xl"
+                onClick={() =>
+                  router.push(
+                    `/services/${service.service.toLowerCase().replace(/\s+/g, "-")}`,
+                  )
+                }
               >
                 <CardHeader>
-                  <div className="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
+                  {/* <div className="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
                     <service.icon className="h-6 w-6 text-primary" />
-                  </div>
+                  </div> */}
                   <CardTitle className="text-foreground">
-                    {service.title}
+                    {service.display_name}
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
