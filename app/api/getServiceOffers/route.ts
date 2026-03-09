@@ -15,7 +15,7 @@ export async function GET(req: Request) {
     const id = url.searchParams.get("id");
 
     const client = await clientPromise;
-    const db = client.db("main");
+    const db = client.db(process.env.MONGODB_DATABASE || "main");
     if (!id) {
         return NextResponse.json(
         { success: false, message: "Missing id parameter" },
@@ -31,7 +31,7 @@ export async function GET(req: Request) {
     
     return NextResponse.json({ success: true, data: offers, service: service });
   } catch (error) {
-    console.log("Error in GET service offers", error);
+    console.error("Error in GET service offers", error);
     return NextResponse.json(
       { success: false, message: "Internal Server Error" },
       { status: 500 }

@@ -21,7 +21,6 @@ export default function Services({
 
   useEffect(() => {
     getServiceOffers(slugKey).then((res) => {
-      console.log("Service offers response:", res);
       if (res.success) {
         setServicesData(res.data);
         setServiceInfo(res.service);

@@ -14,6 +14,14 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { Trash2, Plus, Loader2, ChevronRight } from "lucide-react";
+import {
+  addService,
+  addServiceOffer,
+  deleteService,
+  deleteServiceOffer,
+  getServiceOffers,
+  getServices,
+} from "@/app/actions";
 
 interface Service {
   _id: string;
@@ -69,11 +77,10 @@ const AdminServices = () => {
   const loadServices = async () => {
     try {
       setLoading(true);
-      const res = await fetch("/api/getServices");
-      const data = await res.json();
+      const data = await getServices();
 
       if (data.success) {
-        setServices(data.data);
+        setServices(data.data as Service[]);
       }
     } catch (error) {
       toast.error("Failed to load services");
@@ -86,13 +93,10 @@ const AdminServices = () => {
   const loadOffers = async (serviceName: string) => {
     try {
       setLoadingOffers(true);
-      const res = await fetch(
-        `/api/getServiceOffers?id=${encodeURIComponent(serviceName)}`
-      );
-      const data = await res.json();
+      const data = await getServiceOffers(serviceName);
 
       if (data.success) {
-        setOffers(data.data);
+        setOffers(data.data as ServiceOffer[]);
       }
     } catch (error) {
       toast.error("Failed to load offers");
@@ -126,13 +130,7 @@ const AdminServices = () => {
 
     try {
       setSubmitting(true);
-      const res = await fetch("/api/admin/services", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(newService),
-      });
-
-      const data = await res.json();
+      const data = await addService(newService);
 
       if (data.success) {
         toast.success("Service added successfully");
@@ -164,18 +162,12 @@ const AdminServices = () => {
 
     try {
       setSubmitting(true);
-      const res = await fetch("/api/admin/service-offers", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          title: newOffer.title,
-          description: newOffer.description,
-          image: newOffer.image,
-          service: selectedService.service,
-        }),
+      const data = await addServiceOffer({
+        title: newOffer.title,
+        description: newOffer.description,
+        image: newOffer.image,
+        service: selectedService.service,
       });
-
-      const data = await res.json();
 
       if (data.success) {
         toast.success("Offer added successfully");
@@ -199,11 +191,7 @@ const AdminServices = () => {
 
     try {
       setSubmitting(true);
-      const res = await fetch(`/api/admin/services?id=${id}`, {
-        method: "DELETE",
-      });
-
-      const data = await res.json();
+      const data = await deleteService(id);
 
       if (data.success) {
         toast.success("Service deleted successfully");
@@ -228,11 +216,7 @@ const AdminServices = () => {
 
     try {
       setSubmitting(true);
-      const res = await fetch(`/api/admin/service-offers?id=${id}`, {
-        method: "DELETE",
-      });
-
-      const data = await res.json();
+      const data = await deleteServiceOffer(id);
 
       if (data.success) {
         toast.success("Offer deleted successfully");
@@ -358,7 +342,7 @@ const AdminServices = () => {
                         {service.description}
                       </p>
                     </div>
-                    <ChevronRight className="h-4 w-4 text-gray-400 ml-2 flex-shrink-0" />
+                    <ChevronRight className="h-4 w-4 text-gray-400 ml-2 shrink-0" />
                   </button>
                 ))}
               </div>

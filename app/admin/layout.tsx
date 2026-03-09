@@ -16,7 +16,6 @@ export default async function RootLayout({
   const session = await auth.api.getSession({
     headers: await headers(), // you need to pass the headers object.
   });
-  // console.log("Session in admin layout:", session);
 
   return (
     <main className="flex flex-col min-h-screen bg-background">

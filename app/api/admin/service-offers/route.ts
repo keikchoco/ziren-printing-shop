@@ -15,7 +15,7 @@ export async function POST(req: Request) {
     }
 
     const client = await clientPromise;
-    const db = client.db("main");
+    const db = client.db(process.env.MONGODB_DATABASE || "main");
 
     // Check if service exists
     const serviceExists = await db
@@ -48,7 +48,7 @@ export async function POST(req: Request) {
       },
     });
   } catch (error) {
-    console.log("Error creating service offer", error);
+    console.error("Error creating service offer", error);
     return NextResponse.json(
       { success: false, message: "Internal Server Error" },
       { status: 500 }
@@ -69,7 +69,7 @@ export async function DELETE(req: Request) {
     }
 
     const client = await clientPromise;
-    const db = client.db("main");
+    const db = client.db(process.env.MONGODB_DATABASE || "main");
 
     const result = await db
       .collection("service-offers")
@@ -84,7 +84,7 @@ export async function DELETE(req: Request) {
 
     return NextResponse.json({ success: true });
   } catch (error) {
-    console.log("Error deleting service offer", error);
+    console.error("Error deleting service offer", error);
     return NextResponse.json(
       { success: false, message: "Internal Server Error" },
       { status: 500 }
