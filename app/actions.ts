@@ -70,6 +70,19 @@ export async function deleteService(id: string) {
   });
 }
 
+export async function updateService(payload: {
+  id: string;
+  service: string;
+  display_name: string;
+  description: string;
+}) {
+  return apiRequest("/api/admin/services", {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+}
+
 export async function addServiceOffer(payload: {
   title: string;
   description: string;
@@ -86,5 +99,19 @@ export async function addServiceOffer(payload: {
 export async function deleteServiceOffer(id: string) {
   return apiRequest(`/api/admin/service-offers?id=${encodeURIComponent(id)}`, {
     method: "DELETE",
+  });
+}
+
+export async function updateServiceOffer(payload: {
+  id: string;
+  title?: string;
+  description?: string;
+  image?: string;
+  galleryImages?: string[];
+}) {
+  return apiRequest("/api/admin/service-offers", {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
   });
 }

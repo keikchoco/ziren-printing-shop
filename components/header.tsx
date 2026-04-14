@@ -9,11 +9,11 @@ import { ThemeSwitcher } from "@/components/theme-switcher"
 
 const navLinks = [
   { href: "/", label: "Home" },
-  { href: "#services", label: "Services" },
-  { href: "#pricing", label: "Pricing" },
-  { href: "#about", label: "About Us" },
-  { href: "#faq", label: "FAQ" },
-  { href: "#contact", label: "Contact" },
+  { href: "/#services", label: "Services" },
+  { href: "/#pricing", label: "Pricing" },
+  { href: "/#about", label: "About Us" },
+  { href: "/#faq", label: "FAQ" },
+  { href: "/#contact", label: "Contact" },
 ]
 
 export function Header() {

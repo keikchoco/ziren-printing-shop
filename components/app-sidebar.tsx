@@ -15,7 +15,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
-import { LayoutDashboardIcon, ListIcon, ChartBarIcon, FolderIcon, UsersIcon, CameraIcon, FileTextIcon, Settings2Icon, CircleHelpIcon, SearchIcon, DatabaseIcon, FileChartColumnIcon, FileIcon, CommandIcon, WrenchIcon } from "lucide-react"
+import { LayoutDashboardIcon, ListIcon, ChartBarIcon, FolderIcon, UsersIcon, CameraIcon, FileTextIcon, Settings2Icon, CircleHelpIcon, SearchIcon, DatabaseIcon, FileChartColumnIcon, FileIcon, CommandIcon, WrenchIcon, CalculatorIcon } from "lucide-react"
 import Link from "next/link"
 
 const data = {
@@ -38,6 +38,22 @@ const data = {
       url: "/admin/services",
       icon: (
         <WrenchIcon
+        />
+      ),
+    },
+    {
+      title: "FAQs",
+      url: "/admin/faqs",
+      icon: (
+        <CircleHelpIcon
+        />
+      ),
+    },
+    {
+      title: "Pricing",
+      url: "/admin/pricing",
+      icon: (
+        <CalculatorIcon
         />
       ),
     },

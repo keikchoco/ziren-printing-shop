@@ -1,14 +1,5 @@
 "use client";
 import {
-  CreditCard,
-  FileText,
-  ImageIcon,
-  Layers,
-  Shirt,
-  SignpostIcon,
-  Stamp,
-} from "lucide-react";
-import {
   Card,
   CardContent,
   CardDescription,
@@ -17,54 +8,52 @@ import {
 } from "@/components/ui/card";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { get } from "http";
 import { getServices } from "@/app/actions";
 
-const services = [
+type ServiceItem = {
+  service: string;
+  display_name: string;
+  description: string;
+};
+
+const services: ServiceItem[] = [
   {
-    icon: CreditCard,
     service: "business-cards",
     display_name: "Business Cards",
     description:
       "Premium quality business cards with various finishes including matte, glossy, and textured options.",
   },
   {
-    icon: FileText,
     service: "flyers-brochures",
     display_name: "Flyers & Brochures",
     description:
       "Eye-catching flyers and professional brochures to promote your business, events, or services.",
   },
   {
-    icon: ImageIcon,
     service: "banners-posters",
     display_name: "Banners & Posters",
     description:
       "Large format printing for banners, posters, and signage that make a big impact.",
   },
   {
-    icon: Layers,
     service: "stickers-labels",
     display_name: "Stickers & Labels",
     description:
       "Custom stickers and labels in various shapes, sizes, and materials for any application.",
   },
   {
-    icon: Stamp,
     service: "stamps-seals",
     display_name: "Stamps & Seals",
     description:
       "Professional rubber stamps and embossing seals for official documents and branding.",
   },
   {
-    icon: Shirt,
     service: "custom-apparels",
     display_name: "Custom Apparels",
     description:
       "T-shirt printing and custom apparel with high-quality prints that last.",
   },
   {
-    icon: SignpostIcon,
     service: "signages",
     display_name: "Signages",
     description:
@@ -73,13 +62,13 @@ const services = [
 ];
 
 export function Services() {
-  const [servicesData, setServicesData] = useState(services);
+  const [servicesData, setServicesData] = useState<ServiceItem[]>(services);
   const router = useRouter();
 
   useEffect(() => {
     getServices().then((res) => {
       if (res.success) {
-        setServicesData(res.data);
+        setServicesData((res.data as ServiceItem[]) || []);
       } else {
         console.error("Failed to fetch services:", res.message);
       }

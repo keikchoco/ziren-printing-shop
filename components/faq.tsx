@@ -1,3 +1,6 @@
+"use client"
+
+import { useEffect, useState } from "react"
 import {
   Accordion,
   AccordionContent,
@@ -5,25 +8,42 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion"
 
-const faqs = [
-  {
-    question: "What is the typical turnaround time for orders?",
-    answer:
-      "Our standard turnaround time is 2-3 business days for most print jobs. Rush orders can be completed within 24 hours for an additional fee. Large format printing and custom projects may require additional time.",
-  },
-  {
-    question: "What file formats do you accept?",
-    answer:
-      "We accept most common file formats including PDF, AI, PSD, PNG, JPG, and TIFF. For best results, we recommend submitting files in PDF format with fonts embedded and images at 300 DPI or higher.",
-  },
-  {
-    question: "What payment methods do you accept?",
-    answer:
-      "We accept cash, bank transfers, and GCash payments. For corporate clients, we also offer invoicing with payment terms.",
-  },
-]
+type FaqItem = {
+  _id: string
+  question: string
+  answer: string
+}
 
 export function FAQ() {
+  const [faqs, setFaqs] = useState<FaqItem[]>([])
+
+  useEffect(() => {
+    let isMounted = true
+
+    async function loadFaqs() {
+      try {
+        const response = await fetch("/api/getFaqs", { method: "GET" })
+        const data = await response.json()
+
+        if (!isMounted) {
+          return
+        }
+
+        if (response.ok && data.success) {
+          setFaqs(data.data as FaqItem[])
+        }
+      } catch (error) {
+        console.error("Failed to load FAQs", error)
+      }
+    }
+
+    loadFaqs()
+
+    return () => {
+      isMounted = false
+    }
+  }, [])
+
   return (
     <section id="faq" className="py-16 md:py-24 bg-card/50 scroll-mt-16 rounded-2xl">
       <div className="container mx-auto px-4">
@@ -37,22 +57,26 @@ export function FAQ() {
         </div>
 
         <div className="max-w-3xl mx-auto">
-          <Accordion type="single" collapsible className="space-y-4">
-            {faqs.map((faq, index) => (
-              <AccordionItem
-                key={`faq-${index}-${faq.question.slice(0, 20).replace(/\s/g, "-")}`}
-                value={`item-${index}`}
-                className="bg-card border border-border rounded-lg px-6 last:border"
-              >
-                <AccordionTrigger className="text-foreground hover:text-primary text-left">
-                  {faq.question}
-                </AccordionTrigger>
-                <AccordionContent className="text-muted-foreground leading-relaxed">
-                  {faq.answer}
-                </AccordionContent>
-              </AccordionItem>
-            ))}
-          </Accordion>
+          {faqs.length === 0 ? (
+            <p className="text-muted-foreground text-center">No FAQ items available yet.</p>
+          ) : (
+            <Accordion type="single" collapsible className="space-y-4">
+              {faqs.map((faq, index) => (
+                <AccordionItem
+                  key={faq._id || `faq-${index}`}
+                  value={`item-${index}`}
+                  className="bg-card border border-border rounded-lg px-6 last:border"
+                >
+                  <AccordionTrigger className="text-foreground hover:text-primary text-left">
+                    {faq.question}
+                  </AccordionTrigger>
+                  <AccordionContent className="text-muted-foreground leading-relaxed">
+                    {faq.answer}
+                  </AccordionContent>
+                </AccordionItem>
+              ))}
+            </Accordion>
+          )}
         </div>
       </div>
     </section>

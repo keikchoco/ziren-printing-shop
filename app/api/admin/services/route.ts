@@ -69,6 +69,17 @@ export async function DELETE(req: Request) {
     const client = await clientPromise;
     const db = client.db(process.env.MONGODB_DATABASE || "main");
 
+    const service = await db.collection("services").findOne({
+      _id: new ObjectId(id),
+    });
+
+    if (!service) {
+      return NextResponse.json(
+        { success: false, message: "Service not found" },
+        { status: 404 }
+      );
+    }
+
     // Delete the service
     const result = await db
       .collection("services")
@@ -82,19 +93,92 @@ export async function DELETE(req: Request) {
     }
 
     // Also delete all offers for this service
-    const service = await db.collection("services").findOne({
-      _id: new ObjectId(id),
-    });
-
-    if (service) {
-      await db
-        .collection("service-offers")
-        .deleteMany({ service: service.service });
-    }
+    await db
+      .collection("service-offers")
+      .deleteMany({ service: service.service });
 
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error("Error deleting service", error);
+    return NextResponse.json(
+      { success: false, message: "Internal Server Error" },
+      { status: 500 }
+    );
+  }
+}
+
+export async function PATCH(req: Request) {
+  try {
+    const body = await req.json();
+    const { id, service, display_name, description } = body;
+
+    if (!id || !service || !display_name || !description) {
+      return NextResponse.json(
+        { success: false, message: "Missing required fields" },
+        { status: 400 }
+      );
+    }
+
+    const normalizedService = service.toLowerCase();
+
+    const client = await clientPromise;
+    const db = client.db(process.env.MONGODB_DATABASE || "main");
+
+    const current = await db.collection("services").findOne({
+      _id: new ObjectId(id),
+    });
+
+    if (!current) {
+      return NextResponse.json(
+        { success: false, message: "Service not found" },
+        { status: 404 }
+      );
+    }
+
+    if (current.service !== normalizedService) {
+      const duplicate = await db.collection("services").findOne({
+        service: normalizedService,
+        _id: { $ne: new ObjectId(id) },
+      });
+
+      if (duplicate) {
+        return NextResponse.json(
+          { success: false, message: "Service key already exists" },
+          { status: 400 }
+        );
+      }
+    }
+
+    const result = await db.collection("services").findOneAndUpdate(
+      { _id: new ObjectId(id) },
+      {
+        $set: {
+          service: normalizedService,
+          display_name,
+          description,
+          updatedAt: new Date(),
+        },
+      },
+      { returnDocument: "after" }
+    );
+
+    if (!result) {
+      return NextResponse.json(
+        { success: false, message: "Service not found" },
+        { status: 404 }
+      );
+    }
+
+    if (current.service !== normalizedService) {
+      await db.collection("service-offers").updateMany(
+        { service: current.service },
+        { $set: { service: normalizedService } }
+      );
+    }
+
+    return NextResponse.json({ success: true, data: result });
+  } catch (error) {
+    console.error("Error updating service", error);
     return NextResponse.json(
       { success: false, message: "Internal Server Error" },
       { status: 500 }
