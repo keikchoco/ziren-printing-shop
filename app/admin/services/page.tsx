@@ -998,7 +998,7 @@ const AdminServices = () => {
                         <p className="text-xs text-muted-foreground">
                           {newOfferImageFile
                             ? `Selected: ${newOfferImageFile.name}`
-                            : "Upload an image file. It will be stored in Vercel Blob."}
+                            : "Upload an image file."}
                         </p>
                       </div>
 
