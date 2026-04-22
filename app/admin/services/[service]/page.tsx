@@ -1,6 +1,11 @@
 "use client";
 
-import { addService, deleteService, getServices, updateService } from "@/app/actions";
+import {
+  addServiceOffer,
+  deleteServiceOffer,
+  getAdminServiceOffers,
+  updateServiceOffer,
+} from "@/app/actions";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -21,183 +26,185 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Textarea } from "@/components/ui/textarea";
-import { ArrowRight, Loader2, Pencil, Plus, RefreshCw, Trash2 } from "lucide-react";
-import { useRouter } from "next/navigation";
+import {
+  ArrowLeft,
+  ArrowRight,
+  Loader2,
+  Pencil,
+  Plus,
+  RefreshCw,
+  Trash2,
+} from "lucide-react";
+import { useParams, useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 
-type Service = {
+type ServiceOffer = {
   _id: string;
-  service: string;
-  display_name: string;
+  title: string;
   description: string;
+  image: string;
+  service: string;
   createdAt?: string;
 };
 
-type ServiceFormState = {
+type OfferFormState = {
   id?: string;
-  display_name: string;
-  service: string;
+  title: string;
   description: string;
+  image: string;
 };
 
-const toKebabCase = (text: string): string =>
-  text
-    .toLowerCase()
-    .trim()
-    .replace(/[^\w\s-]/g, "")
-    .replace(/\s+/g, "-")
-    .replace(/-+/g, "-");
-
-const emptyForm: ServiceFormState = {
-  display_name: "",
-  service: "",
+const emptyForm: OfferFormState = {
+  title: "",
   description: "",
+  image: "",
 };
 
-export default function AdminServicesPage() {
+export default function ServiceOffersPage() {
+  const params = useParams<{ service: string }>();
   const router = useRouter();
-  const [services, setServices] = useState<Service[]>([]);
+  const serviceKey = decodeURIComponent(params.service);
+
+  const [offers, setOffers] = useState<ServiceOffer[]>([]);
   const [filter, setFilter] = useState("");
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
-  const [form, setForm] = useState<ServiceFormState>(emptyForm);
+  const [form, setForm] = useState<OfferFormState>(emptyForm);
 
-  const filteredServices = useMemo(() => {
+  const filteredOffers = useMemo(() => {
     const query = filter.trim().toLowerCase();
-    if (!query) return services;
+    if (!query) return offers;
 
-    return services.filter((item) =>
-      [item.display_name, item.service, item.description]
+    return offers.filter((item) =>
+      [item.title, item.description, item.image]
         .join(" ")
         .toLowerCase()
         .includes(query)
     );
-  }, [services, filter]);
+  }, [offers, filter]);
 
-  const loadServices = useCallback(async () => {
+  const loadOffers = useCallback(async () => {
     setLoading(true);
-    const response = await getServices();
+    const response = await getAdminServiceOffers(serviceKey);
     if (!response.success) {
-      toast.error(response.message || "Failed to load services");
+      toast.error(response.message || "Failed to load offers");
       setLoading(false);
       return;
     }
 
-    setServices((response.data as Service[]) || []);
+    setOffers((response.data as ServiceOffer[]) || []);
     setLoading(false);
-  }, []);
+  }, [serviceKey]);
 
   useEffect(() => {
     const run = async () => {
-      await loadServices();
+      await loadOffers();
     };
 
     void run();
-  }, [loadServices]);
+  }, [loadOffers]);
 
   const openCreateDialog = () => {
     setForm(emptyForm);
     setDialogOpen(true);
   };
 
-  const openEditDialog = (service: Service) => {
+  const openEditDialog = (offer: ServiceOffer) => {
     setForm({
-      id: service._id,
-      display_name: service.display_name,
-      service: service.service,
-      description: service.description,
+      id: offer._id,
+      title: offer.title,
+      description: offer.description,
+      image: offer.image,
     });
     setDialogOpen(true);
   };
 
-  const handleDisplayNameChange = (value: string) => {
-    setForm((current) => ({
-      ...current,
-      display_name: value,
-      service: toKebabCase(value),
-    }));
-  };
-
   const handleSubmit = async () => {
-    if (!form.display_name || !form.service || !form.description) {
-      toast.error("Display name, service key, and description are required");
+    if (!form.title || !form.description) {
+      toast.error("Title and description are required");
       return;
     }
 
     setSubmitting(true);
 
     const response = form.id
-      ? await updateService({
+      ? await updateServiceOffer({
           id: form.id,
-          display_name: form.display_name,
-          service: form.service,
+          title: form.title,
           description: form.description,
+          image: form.image,
+          service: serviceKey,
         })
-      : await addService({
-          display_name: form.display_name,
-          service: form.service,
+      : await addServiceOffer({
+          title: form.title,
           description: form.description,
+          image: form.image,
+          service: serviceKey,
         });
 
     if (!response.success) {
-      toast.error(response.message || "Failed to save service");
+      toast.error(response.message || "Failed to save offer");
       setSubmitting(false);
       return;
     }
 
-    toast.success(form.id ? "Service updated" : "Service created");
+    toast.success(form.id ? "Offer updated" : "Offer created");
     setDialogOpen(false);
     setForm(emptyForm);
-    await loadServices();
+    await loadOffers();
     setSubmitting(false);
   };
 
-  const handleDelete = async (service: Service) => {
+  const handleDelete = async (offer: ServiceOffer) => {
     const confirmed = window.confirm(
-      `Delete ${service.display_name}? This also deletes all offers and gallery images.`
+      `Delete offer \"${offer.title}\" and all its gallery images?`
     );
     if (!confirmed) {
       return;
     }
 
     setSubmitting(true);
-    const response = await deleteService(service._id);
+    const response = await deleteServiceOffer(offer._id);
 
     if (!response.success) {
-      toast.error(response.message || "Failed to delete service");
+      toast.error(response.message || "Failed to delete offer");
       setSubmitting(false);
       return;
     }
 
-    toast.success("Service deleted");
-    await loadServices();
+    toast.success("Offer deleted");
+    await loadOffers();
     setSubmitting(false);
   };
 
-  const openOffers = (service: Service) => {
-    router.push(`/admin/services/${encodeURIComponent(service.service)}`);
+  const openGallery = (offer: ServiceOffer) => {
+    router.push(`/admin/services/${encodeURIComponent(serviceKey)}/${encodeURIComponent(offer._id)}`);
   };
 
   return (
     <div className="flex h-full min-h-[calc(100vh-180px)] flex-col gap-4">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-semibold">Services</h1>
-          <p className="text-sm text-muted-foreground">
-            Full CRUD service table. Select a service to manage offers.
-          </p>
+          <div className="mb-2 flex items-center gap-2 text-sm text-muted-foreground">
+            <Button variant="ghost" size="sm" onClick={() => router.push("/admin/services")}> 
+              <ArrowLeft className="mr-1 h-4 w-4" />
+              Back to Services
+            </Button>
+          </div>
+          <h1 className="text-2xl font-semibold">Offers</h1>
+          <p className="text-sm text-muted-foreground">Service: {serviceKey}</p>
         </div>
 
         <div className="flex items-center gap-2">
-          <Button variant="outline" onClick={loadServices} disabled={loading || submitting}>
+          <Button variant="outline" onClick={loadOffers} disabled={loading || submitting}>
             <RefreshCw className="mr-2 h-4 w-4" />
             Refresh
           </Button>
           <Button onClick={openCreateDialog} disabled={submitting}>
             <Plus className="mr-2 h-4 w-4" />
-            Add Service
+            Add Offer
           </Button>
         </div>
       </div>
@@ -207,20 +214,20 @@ export default function AdminServicesPage() {
           <Input
             value={filter}
             onChange={(event) => setFilter(event.target.value)}
-            placeholder="Filter by display name, key, or description"
+            placeholder="Filter by title, description, or image"
             className="max-w-xl"
           />
-          <p className="text-sm text-muted-foreground">{filteredServices.length} records</p>
+          <p className="text-sm text-muted-foreground">{filteredOffers.length} records</p>
         </div>
 
         <div className="max-h-[calc(100vh-340px)] overflow-auto">
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Display Name</TableHead>
-                <TableHead>Service Key</TableHead>
+                <TableHead>Title</TableHead>
                 <TableHead>Description</TableHead>
-                <TableHead className="w-[270px]">Actions</TableHead>
+                <TableHead>Cover Image URL</TableHead>
+                <TableHead className="w-[300px]">Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -230,28 +237,28 @@ export default function AdminServicesPage() {
                     <Loader2 className="mx-auto h-5 w-5 animate-spin" />
                   </TableCell>
                 </TableRow>
-              ) : filteredServices.length === 0 ? (
+              ) : filteredOffers.length === 0 ? (
                 <TableRow>
                   <TableCell colSpan={4} className="py-12 text-center text-muted-foreground">
-                    No services found.
+                    No offers found.
                   </TableCell>
                 </TableRow>
               ) : (
-                filteredServices.map((service) => (
-                  <TableRow key={service._id}>
-                    <TableCell className="font-medium">{service.display_name}</TableCell>
-                    <TableCell>{service.service}</TableCell>
-                    <TableCell className="max-w-[520px] truncate">{service.description}</TableCell>
+                filteredOffers.map((offer) => (
+                  <TableRow key={offer._id}>
+                    <TableCell className="font-medium">{offer.title}</TableCell>
+                    <TableCell className="max-w-[460px] truncate">{offer.description}</TableCell>
+                    <TableCell className="max-w-[280px] truncate">{offer.image || "-"}</TableCell>
                     <TableCell>
                       <div className="flex flex-wrap gap-2">
-                        <Button size="sm" variant="outline" onClick={() => openOffers(service)}>
+                        <Button size="sm" variant="outline" onClick={() => openGallery(offer)}>
                           <ArrowRight className="mr-2 h-4 w-4" />
-                          Offers
+                          Gallery
                         </Button>
                         <Button
                           size="sm"
                           variant="outline"
-                          onClick={() => openEditDialog(service)}
+                          onClick={() => openEditDialog(offer)}
                           disabled={submitting}
                         >
                           <Pencil className="mr-2 h-4 w-4" />
@@ -260,7 +267,7 @@ export default function AdminServicesPage() {
                         <Button
                           size="sm"
                           variant="destructive"
-                          onClick={() => handleDelete(service)}
+                          onClick={() => handleDelete(offer)}
                           disabled={submitting}
                         >
                           <Trash2 className="mr-2 h-4 w-4" />
@@ -279,39 +286,46 @@ export default function AdminServicesPage() {
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>{form.id ? "Edit Service" : "Create Service"}</DialogTitle>
+            <DialogTitle>{form.id ? "Edit Offer" : "Create Offer"}</DialogTitle>
             <DialogDescription>
-              {form.id
-                ? "Update the selected service details."
-                : "Create a new service key and description."}
+              {form.id ? "Update offer details." : "Create a new offer for this service."}
             </DialogDescription>
           </DialogHeader>
 
           <div className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="service-display-name">Display Name</Label>
+              <Label htmlFor="offer-title">Title</Label>
               <Input
-                id="service-display-name"
-                value={form.display_name}
-                onChange={(event) => handleDisplayNameChange(event.target.value)}
-                placeholder="Acrylic Signages"
+                id="offer-title"
+                value={form.title}
+                onChange={(event) =>
+                  setForm((current) => ({ ...current, title: event.target.value }))
+                }
+                placeholder="Acrylic Build Up"
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="service-key">Service Key</Label>
-              <Input id="service-key" value={form.service} readOnly className="bg-muted" />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="service-description">Description</Label>
+              <Label htmlFor="offer-description">Description</Label>
               <Textarea
-                id="service-description"
+                id="offer-description"
                 value={form.description}
                 onChange={(event) =>
                   setForm((current) => ({ ...current, description: event.target.value }))
                 }
                 rows={4}
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="offer-cover">Cover Image URL (optional)</Label>
+              <Input
+                id="offer-cover"
+                value={form.image}
+                onChange={(event) =>
+                  setForm((current) => ({ ...current, image: event.target.value }))
+                }
+                placeholder="https://..."
               />
             </div>
           </div>
@@ -322,7 +336,7 @@ export default function AdminServicesPage() {
             </Button>
             <Button onClick={handleSubmit} disabled={submitting}>
               {submitting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
-              {form.id ? "Save Changes" : "Create Service"}
+              {form.id ? "Save Changes" : "Create Offer"}
             </Button>
           </DialogFooter>
         </DialogContent>

@@ -1,9 +1,9 @@
 import { betterAuth } from "better-auth";
-import { MongoClient } from "mongodb";
 import { mongodbAdapter } from "better-auth/adapters/mongodb";
+import clientPromise from "@/lib/mongodb";
 
-const client = new MongoClient(process.env.MONGODB_URI!);
-const db = client.db(process.env.MONGODB_DATABASE!);
+const client = await clientPromise;
+const db = client.db(process.env.MONGODB_DATABASE || "main");
 
 export const auth = betterAuth({
   baseURL: process.env.BETTER_AUTH_BASE_URL,
