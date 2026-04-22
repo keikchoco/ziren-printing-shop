@@ -44,7 +44,7 @@ export function Hero() {
                   <Printer className="h-6 w-6 text-primary" />
                 </div>
                 <div>
-                  <p className="font-semibold text-foreground">500+</p>
+                  <p className="font-semibold text-foreground">1000+</p>
                   <p className="text-sm text-muted-foreground">Projects Done</p>
                 </div>
               </div>
@@ -53,7 +53,7 @@ export function Hero() {
                   <Award className="h-6 w-6 text-secondary" />
                 </div>
                 <div>
-                  <p className="font-semibold text-foreground">5 Years</p>
+                  <p className="font-semibold text-foreground">7 Years</p>
                   <p className="text-sm text-muted-foreground">Experience</p>
                 </div>
               </div>
