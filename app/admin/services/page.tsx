@@ -639,7 +639,7 @@ const AdminServices = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-2 gap-2 w-full md:w-auto md:min-w-70">
+        <div className="grid grid-cols-2 gap-2 w-full md:w-auto md:min-w-70 *:py-2">
           <Card>
             <CardContent className="p-4">
               <p className="text-xs text-muted-foreground">Total Services</p>
