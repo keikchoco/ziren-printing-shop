@@ -49,14 +49,6 @@ const data = {
         />
       ),
     },
-    {
-      title: "Pricing",
-      url: "/admin/pricing",
-      icon: (
-        <CalculatorIcon
-        />
-      ),
-    },
     // {
     //   title: "Analytics",
     //   url: "#",

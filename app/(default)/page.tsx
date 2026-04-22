@@ -11,7 +11,7 @@ export default function Home() {
       <Hero />
       <div className="max-w-6xl mx-auto px-4">
         <Services />
-        <PricingCalculator />
+        {/* <PricingCalculator /> */}
         <About />
         <FAQ />
         <Contact />

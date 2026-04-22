@@ -11,7 +11,7 @@ export default function AuthPage() {
   return (
     <div className="flex my-auto h-full grow flex-col items-center justify-center bg-background px-4">
       <div className="w-full max-w-md space-y-4">
-        <div className="flex gap-2 rounded-lg border border-border bg-muted p-1">
+        {/* <div className="flex gap-2 rounded-lg border border-border bg-muted p-1">
           <Button
             variant={mode === "signin" ? "default" : "ghost"}
             className="flex-1"
@@ -26,7 +26,7 @@ export default function AuthPage() {
           >
             Sign Up
           </Button>
-        </div>
+        </div> */}
 
         <Suspense fallback={<div>Loading...</div>}>
           {mode === "signin" ? <SignInForm /> : <SignUpForm />}
